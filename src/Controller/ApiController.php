@@ -53,22 +53,41 @@ class ApiController extends Controller
 
         $entityManager = $this->getDoctrine()->getManager();
         $bikes = $this->bikeRepository->findAll();
-
-        $bikeDistanceArray = array();
-        foreach($bikes as $bike){
-           array_push($bikeDistanceArray,$this->getDistance($bike->getEndStationLatitude(),$bike->getEndStationLongitude(),$lat,$lng));
+        if ($bikes == null) {
+            $responseData = new Response();
+            $responseData->setContent(json_encode(["message" => 'Bikes not found ;)']));
+            $responseData->headers->set('Content-Type', 'application/json');
+            return $responseData;
+            // return new JsonResponse('No results', JsonResponse::HTTP_OK); "freeBikes" =>  $howManyRev[0]['COUNT(*)']
+        }
+        $updatedBikeObjArray = array();
+        foreach ($bikes as $bike) {
+            $bike->setDistanceFromUser((string) $this->getDistance($bike->getEndStationLatitude(), $bike->getEndStationLongitude(), $lat, $lng));
         }
 
-        sort($bikeDistanceArray);
-
-        $RAW_QUERY = 'SELECT COUNT(*) FROM bike where end_station_latitude=' . $lat . ' AND end_station_longitude = "' . $lng . '"';
-        $statement = $entityManager->getConnection()->prepare($RAW_QUERY);
-        $statement->execute();
-        $howManyRev = $statement->fetchAll();
-        if($bikes == null){
-            return new JsonResponse('No results', JsonResponse::HTTP_OK);
+        $responseData["stations"] = array();
+//
+        foreach ($bikes as $bike) {
+            $stationId = $bike->getEndstationId();
+            if (!isset($responseData["stations"][$bike->getEndStationId()])) {
+                $responseData["stations"][$bike->getEndStationId()] = array(
+                    "stationId" => $stationId,
+                    "freeBikes" => 0,
+                    "distanceFromUser" => $bike->getDistanceFromUser()
+                );
+            }
+            $responseData["stations"][$stationId]["freeBikes"] ++;
         }
-        $bikeData = array("bikeDistanceArray" => $bikeDistanceArray,"freeBikes" =>  $howManyRev[0]['COUNT(*)']);
-        return new JsonResponse(json_encode($bikeData), JsonResponse::HTTP_OK);
+
+        usort($responseData["stations"], function($a, $b) {
+            return ($a["distanceFromUser"] <=> $b["distanceFromUser"]);
+        });
+
+
+
+        $response = new Response();
+        $response->setContent(json_encode($responseData));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 }

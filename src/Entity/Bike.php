@@ -7,17 +7,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="bike")
  */
 class Bike {
-  /**
-   * @ORM\Column(type="integer")
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="AUTO")
-   */
-  private $id;
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
 
-  /** @ORM\Column(type="integer", name="duration_time") */
-  public $durationTime;
-  
-   /** @ORM\Column(type="datetime", name="start_time") */
+    /** @ORM\Column(type="integer", name="duration_time") */
+    public $durationTime;
+
+    /** @ORM\Column(type="datetime", name="start_time") */
     public $startTime;
 
     /**
@@ -37,69 +37,77 @@ class Bike {
         $this->id = $id;
         return $this;
     }
-  
- /** @ORM\Column(type="datetime", name="end_time") */
+
+    /** @ORM\Column(type="datetime", name="end_time") */
     public $endTime;
-  
- /** @ORM\Column(type="integer", name="start_station_id") */
-  private $startStationId;
-  
+
+    /** @ORM\Column(type="integer", name="start_station_id") */
+    private $startStationId;
+
     /** @ORM\Column(type="string", length=100, name="start_station_name") */
-  private $startStationName;
-  
+    private $startStationName;
+
     /**
-   * @ORM\Column(type="string", length=100, name="start_station_latitude")
-   */
-  private $startStationLatitude;
-  
+     * @ORM\Column(type="string", length=100, name="start_station_latitude")
+     */
+    private $startStationLatitude;
+
     /**
-   * @ORM\Column(type="string", length=100, name="start_station_longitude")
-   */
-  private $startStationLongitude;
-  
+     * @ORM\Column(type="string", length=100, name="start_station_longitude")
+     */
+    private $startStationLongitude;
+
     /**
-   * @ORM\Column(type="integer", name="end_station_id")
-   */
-  private $endStationId;
-  
+     * @ORM\Column(type="integer", name="end_station_id")
+     */
+    private $endStationId;
+
     /**
-   * @ORM\Column(type="string", length=100, name="end_station_name")
-   */
-  private $endStationName;
-  
+     * @ORM\Column(type="string", length=100, name="end_station_name")
+     */
+    private $endStationName;
+
     /**
-   * @ORM\Column(type="string", length=100, name="end_station_latitude")
-   */
-  private $endStationLatitude;
-  
+     * @ORM\Column(type="string", length=100, name="end_station_latitude")
+     */
+    private $endStationLatitude;
+
     /**
-   * @ORM\Column(type="string", length=100, name="end_station_longitude")
-   */
-  private $endStationLongitude;
-  
+     * @ORM\Column(type="string", length=100, name="end_station_longitude")
+     */
+    private $endStationLongitude;
+
     /**
-   * @ORM\Column(type="integer", name="bike_id")
-   */
-  private $bikeId;
-  
+     * @ORM\Column(type="integer", name="bike_id")
+     */
+    private $bikeId;
+
     /**
-   * @ORM\Column(type="string", length=100, name="user_type")
-   */
-  private $userType;
-  
+     * @ORM\Column(type="string", length=100, name="user_type")
+     */
+    private $userType;
+
     /**
-   * @ORM\Column(type="string", length=100, name="member_birth_year")
-   */
-  private $memberBirthYear;
+     * @ORM\Column(type="string", length=100, name="member_birth_year")
+     */
+    private $memberBirthYear;
 
     /**
      * @ORM\Column(type="string", length=100, name="member_gender")
      */
+
+
+
     private $memberGender;
+
 
     /**
      * @return mixed
      */
+
+    private $distanceFromUser;
+
+
     public function getMemberGender()
     {
         return $this->memberGender;
@@ -112,11 +120,11 @@ class Bike {
     {
         $this->memberGender = $memberGender;
     }
-  
+
     /**
-   * @ORM\Column(type="string", length=100, name="bike_share_for_all_trip")
-   */
-  private $bikeShareForAllTrip;
+     * @ORM\Column(type="string", length=100, name="bike_share_for_all_trip")
+     */
+    private $bikeShareForAllTrip;
 
     /**
      * @return mixed
@@ -385,6 +393,16 @@ class Bike {
     public function setBikeShareForAllTrip($bikeShareForAllTrip)
     {
         $this->bikeShareForAllTrip = $bikeShareForAllTrip;
+        return $this;
+    }
+
+    public function getDistanceFromUser()
+    {
+        return $this->distanceFromUser;
+    }
+
+    public function setDistanceFromUser($distanceFromUser){
+        $this->distanceFromUser = $distanceFromUser;
         return $this;
     }
 }
